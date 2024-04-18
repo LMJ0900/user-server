@@ -5,5 +5,6 @@ export interface IArticle{
     regDate? : string
     modDate? : string
     writer? : string
+    board? : number
    
 }

@@ -15,16 +15,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { findAllBoards } from "@/app/components/boards/service/board.service";
 import { API } from "@/app/components/common/enums/API";
 import AxiosConfig from "@/app/components/common/configs/axios-config";
-import router from "next/router";
 import { saveArticle } from "@/app/components/articles/service/article.service";
 import { IArticle } from "@/app/components/articles/model/article";
+import { PG } from "@/app/components/common/enums/PG";
 // import React from "react";
 
 export default function WriteArticlePage() {
+  const router = useRouter()
   const [article, setArticle] = useState({} as IArticle)
-  const handelCancel = () => {}
+  const handelCancel = () => {
+   router.push(`${PG.BOARD}/list`)
+  }
   const handleSubmit = () => {
   dispatch(saveArticle(article))
+  router.push(`${PG.BOARD}/list`)
   }
   const handleInsert = (e:any) => {
     const {
@@ -32,6 +36,7 @@ export default function WriteArticlePage() {
     } = e;
     setArticle(dto => ({ ...dto, [name]: value }));
     //공부하기
+    console.log(JSON.stringify(article))
   }
   
   const dispatch = useDispatch()
@@ -43,15 +48,13 @@ export default function WriteArticlePage() {
 
   const [selected, setSelected] = useState("게시판 선택");
   
-  const handleSelect = (e:any) => {
-    setSelected(e.target.value);
-  };
 
     return(<>
 
 <form className="max-w-sm mx-auto">
   <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board</label>
-  <select onChange={handleSelect} value={selected}> {allBoards.map((item) => (
+  <select onChange={handleInsert} name = "board" > 
+          {allBoards.map((item) => (
             <option value={item.id} key={item.id}>
             {item.title}
             </option>

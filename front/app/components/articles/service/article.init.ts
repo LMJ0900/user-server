@@ -8,6 +8,7 @@ export const initialState:IArticle = {
     regDate : '',
     modDate : '',
     writer : '' ,
+    board : 0
    
 
 
