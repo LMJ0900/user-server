@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? jwtProvider.CreateToken(param) : "None")
+                .token(flag ? jwtProvider.createToken(param) : "None")
                 .build();
     }
 

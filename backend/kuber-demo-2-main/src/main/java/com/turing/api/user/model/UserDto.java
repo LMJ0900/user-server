@@ -18,6 +18,6 @@ public class UserDto {
     private String job;
     private String regDate;
     private String modDate;
-
+    private String token;
 
 }

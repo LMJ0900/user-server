@@ -25,6 +25,7 @@ public class User extends BaseEntity {
     private String phone;
     //private Long addressId;
     private String job;
+    private String token;
     //private Double height;
     //private Double weight;
 
@@ -37,6 +38,7 @@ public class User extends BaseEntity {
         this.name = name;
         this.phone = phone;
         this.job = job;
+
 //        this.height = height;
 //        this.weight = weight;
     }

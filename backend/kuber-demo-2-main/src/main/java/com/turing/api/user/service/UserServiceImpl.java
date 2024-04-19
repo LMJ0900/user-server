@@ -6,11 +6,13 @@ import com.turing.api.common.component.Messenger;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import com.turing.api.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +68,10 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
     public boolean existsById(Long id) {
         return repository.existsById(id);
     }
+    @Override
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
+    }
 
     @Override
     public Messenger modify(UserDto user) {
@@ -93,15 +99,25 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
         return Optional.of(entityToDto(user.get()));
     }
 
+    @Transactional
     @Override
     public Messenger login(UserDto param) {
 
-        boolean flag = repository.findByUsername(param.getUsername()).get()
-                .getPassword().equals(param.getPassword());
+        User user = repository.findByUsername(param.getUsername()).get();
+        String token = jwtProvider.createToken(entityToDto(user));
+        boolean flag = user.getPassword().equals(param.getPassword());
+
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+
+        log.info("TOKEN Header : " + header);
+        log.info("TOKEN Payload : " + payload);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? jwtProvider.CreateToken(param) : "None")
+                .token(flag ? token : "None")
                 .build();
     }
 

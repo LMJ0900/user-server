@@ -11,14 +11,19 @@ import { PG } from "./components/common/enums/PG";
 import { useRouter } from "next/navigation"
 import { stringify } from "querystring"
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "./components/users/service/user.service";
-import { getAuth } from "./components/users/service/user.slice";
+import { existsByUsername, login } from "./components/users/service/user.service";
+import { getAuth, getExistsByUsername } from "./components/users/service/user.slice";
 import { IUser } from "./components/users/model/user.model";
 import nookies, { parseCookies, destroyCookie, setCookie } from 'nookies'
+import { jwtDecode } from "jwt-decode";
 
-const HomePage: NextPage = () => {
+export default function home ()  {
   const [name, setName] = useState('')
   const [user, setUser] = useState({} as IUser)
+  const [isWrongId, SetIsWrongId] = useState(false)
+  const [isWrongPw, SetIsWrongPw] = useState(false)
+  const [isTrueId, SetIsTrueId] = useState(false)
+  const [len, setLen] = useState('')
   const handleChange = (e: any) => {
     setName(e.target.value)
 
@@ -26,16 +31,36 @@ const HomePage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch()
   const auth = useSelector(getAuth)
+  const existUser = useSelector(getExistsByUsername)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleUsername = (e: any) => {
-    setUser({
-      ...user,
-      username: e.target.value
-    })
+    const ID_CHECK = /^[a-zA-Z][a-zA-Z0-9]{5,19}$/g;
+    // 영어 대소문자로 시작하는 6~20자의 영어 소문자와 뜨는 숫자 
+
+if(ID_CHECK.test(len)){
+      SetIsWrongId(false)
+      SetIsTrueId(true)
+
+      setUser({
+        ...user,
+        username: len
+      })
+    } else{
+      SetIsWrongId(true)
+      SetIsTrueId(false)
+    }
   }
+   
   const handlePassword = (e: any) => {
+    const PW_CHECK =/^[a-zA-Z0-9[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]]+[a-zA-Z0-9[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]]{5,19}$/g;
+    //영어 대소문자로 시작하는 6~20자의 영어 소문자와 뜨는 숫자 
+    if(PW_CHECK.test(e.target.value)){
+      SetIsWrongPw(false)
+    }else{
+      SetIsWrongPw(true)
+    }
     setUser({
       ...user,
       password: e.target.value
@@ -43,6 +68,7 @@ const HomePage: NextPage = () => {
   }
   const handleSubmit = () => {
     console.log('user...' + JSON.stringify(user))
+    dispatch(existsByUsername(user.username))
     dispatch(login(user))
   }
 
@@ -52,13 +78,18 @@ const HomePage: NextPage = () => {
       setCookie({}, 'token', auth.token, { httpOnly: false, path: '/' })
       console.log('서버에서 넘어온 메세지 ' + parseCookies().message)
       console.log('서버에서 넘어온 토큰 ' + parseCookies().token)
+      console.log('토큰을 디코드한 내용 ')
+      console.log(jwtDecode<any>(parseCookies().token))
       router.push(`${PG.BOARD}/list`)
+      console.log('테스트 문자 : ' + existUser)
     }
-    else if (auth.message === 'FAILURE') {
-      alert('FAIL');
+    else if (existUser === 'true') {
+      console.log('트루' + existUser)
+      alert('잘못된 비밀번호입니다');
     }
-    else if (auth.message === 'WRONG PASSWORD') {
-      alert('WRONG PASSWORD');
+    else if (existUser === 'false') {
+      console.log('펄스' +existUser)
+      alert('잘못된 아이디입니다');
     }
   }, [auth])
 
@@ -87,11 +118,31 @@ const HomePage: NextPage = () => {
                 required
               />
             </div>
+            {isWrongId && (<pre>
+              <h6 className = 'text-red-500'>
+                잘못된 아이디 형식입니다.
+              </h6>
+            </pre>)}
+            {isTrueId && (<pre>
+              <h6 className = 'text-blue-500'>
+                올바른 아이디 형식입니다.
+              </h6>
+            </pre>)}
+            {!existUser && len?.length != 0 && <pre>
+              <h6 className = 'text-red-500'>
+                잘못된 아이디 형식입니다.
+              </h6>
+              </pre>}
             <div className="mt-4 flex flex-col justify-between">
               <div className="flex justify-between">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Password
                 </label>
+                {isWrongPw && (<pre>
+              <h6 className = 'text-red-500'>
+                잘못된 비밀번호입니다.
+              </h6>
+            </pre>)}
               </div>
               <input
                 onChange={handlePassword}
@@ -155,9 +206,6 @@ const HomePage: NextPage = () => {
         </div>
       </div>
       <h2> ID : Reuven </h2>
-    </div>
-  )
+    </div>)
 
-
-}
-export default HomePage;
+            }

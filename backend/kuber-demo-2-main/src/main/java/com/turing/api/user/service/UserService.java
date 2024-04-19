@@ -26,6 +26,8 @@ public interface UserService extends CommandService<UserDto>, QueryService<UserD
 
     boolean existsById(Long id);
 
+    boolean existsByUsername(String username);
+
     Messenger modify(UserDto user);
     List<UserDto> findUsersByName(String name);
     List<UserDto> findUsersByJob(String job);
@@ -58,8 +60,8 @@ public interface UserService extends CommandService<UserDto>, QueryService<UserD
 
 
 
-    // default UserDto entityToDto(Optional<User> optional){
-    //     return UserDto.builder().build();
-    // }
+     default UserDto entityToDto(Optional<User> optional){
+         return UserDto.builder().build();
+     }
 
 }

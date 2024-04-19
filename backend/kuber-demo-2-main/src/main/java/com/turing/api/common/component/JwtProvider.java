@@ -28,7 +28,7 @@ public class JwtProvider {
     public JwtProvider(@Value("${jwt.secret}") String secretKey) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
-    public String CreateToken(UserDto dto) {
+    public String createToken(UserDto dto) {
         String token = Jwts.builder()
                 .issuer(issuer)
                 .signWith(secretKey)

@@ -47,9 +47,14 @@ public class UserController {
     }
 
     @GetMapping("/existId")
-    public ResponseEntity<Boolean> existsById(@RequestBody long id){
+    public ResponseEntity<Boolean> existsById(@RequestParam("id") long id){
         log.info("입력받은 정보 : {}" );
         return ResponseEntity.ok(service.existsById(id));
+    }
+    @GetMapping("/exists-Username")
+    public ResponseEntity<Boolean> existByUsername(@RequestParam("username") String username){
+        log.info("입력받은 정보 : {}" );
+        return ResponseEntity.ok(service.existsByUsername(username));
     }
 
     @GetMapping("/detail")
