@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { existsByUsernameAPI, findAllUsersAPI, findUserByIdAPI, loginAPI } from "./user.api";
+import { existsByUsernameAPI, findAllUsersAPI, findUserByIdAPI, loginAPI, logoutAPI } from "./user.api";
 import { IUser } from "../model/user.model";
 
 export const findAllUsers : any = createAsyncThunk(
@@ -25,5 +25,9 @@ export const login : any = createAsyncThunk(
 )
 export const existsByUsername : any = createAsyncThunk(
     'users/existsByUsername',
-async (username : string) => await existsByUsernameAPI(username)
+async (username : string) => await existsByUsernameAPI(username))
+
+export const logout: any = createAsyncThunk(
+    'user/logout',
+    async (username : string) => await logoutAPI(username)
 )

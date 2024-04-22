@@ -1,7 +1,7 @@
 package com.turing.api.user.service;
 
 
-import com.turing.api.common.component.JwtProvider;
+import com.turing.api.common.component.security.JwtProvider;
 import com.turing.api.common.component.Messenger;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
@@ -102,24 +102,20 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
     @Transactional
     @Override
     public Messenger login(UserDto param) {
-
+        log.info("로그인 서비스 확인 :" + param);
         User user = repository.findByUsername(param.getUsername()).get();
-        String token = jwtProvider.createToken(entityToDto(user));
+        String accessToken = jwtProvider.createToken(entityToDto(user));
         boolean flag = user.getPassword().equals(param.getPassword());
 
-        String[] chunks = token.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
-
-        log.info("TOKEN Header : " + header);
-        log.info("TOKEN Payload : " + payload);
+        jwtProvider.getPayload(accessToken);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? token : "None")
+                .accessToken(flag ? accessToken : "None")
                 .build();
     }
+
+
 
 
 }

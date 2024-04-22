@@ -1,4 +1,4 @@
-package com.turing.api.common.component;
+package com.turing.api.common.component.files;
 
 import org.springframework.stereotype.Component;
 

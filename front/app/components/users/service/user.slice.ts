@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { existsByUsername, findAllUsers, findUserById, login } from "./user.service";
+import { existsByUsername, findAllUsers, findUserById, login, logout } from "./user.service";
 import { IUser } from "../model/user.model";
 
 const status ={
@@ -17,11 +17,13 @@ interface UserState  {
     array? : Array<IUser>,
     json? : IUser,
     auth? : IAuth
+    existsUsername?: boolean
 }
 export const initialState:UserState = {
     json: {} as IUser,
     array : [],
-    auth: {} as IAuth
+    auth: {} as IAuth,
+    existsUsername: false
 }
 export const userSlice = createSlice({
     name: "users",

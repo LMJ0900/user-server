@@ -1,12 +1,9 @@
 package com.turing.api.article;
 
 
-import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.service.ArticleServiceImpl;
 import com.turing.api.common.component.Messenger;
-import com.turing.api.common.component.PageRequestVo;
-import com.turing.api.user.model.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

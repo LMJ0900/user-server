@@ -1,21 +1,13 @@
 package com.turing.api.common.security.service;
 
-import com.turing.api.common.component.JwtProvider;
+import com.turing.api.common.component.security.JwtProvider;
 import com.turing.api.common.component.Messenger;
-import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import com.turing.api.user.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 
 @Service
@@ -33,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? jwtProvider.createToken(param) : "None")
+                .accessToken(flag ? jwtProvider.createToken(param) : "None")
                 .build();
     }
 

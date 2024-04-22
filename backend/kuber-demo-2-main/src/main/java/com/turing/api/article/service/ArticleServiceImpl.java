@@ -5,8 +5,6 @@ import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.repository.ArticleRepository;
 import com.turing.api.common.component.Messenger;
-import com.turing.api.common.component.PageRequestVo;
-import com.turing.api.user.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -93,8 +93,13 @@ public class UserController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<Messenger> login(@RequestBody UserDto param) {
-        log.info("입력받은 정보 : {}", param );
-        return ResponseEntity.ok(service.login(param));
+        log.info("로그인 파라미터 : {}", param );
+       Messenger messenger = service.login(param);
+       log.info("로그인 결과 메신저 확인 : {} ", messenger.toString());
+        return ResponseEntity.ok(messenger);
+
+
+
     }
 
 

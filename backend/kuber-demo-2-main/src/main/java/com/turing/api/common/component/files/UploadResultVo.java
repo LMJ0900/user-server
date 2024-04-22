@@ -1,4 +1,4 @@
-package com.turing.api.common.component;
+package com.turing.api.common.component.files;
 
 public class UploadResultVo {
     // 파일 업로드 구현시 코딩
