@@ -51,11 +51,6 @@ public class UserController {
         log.info("입력받은 정보 : {}" );
         return ResponseEntity.ok(service.existsById(id));
     }
-    @GetMapping("/exists-Username")
-    public ResponseEntity<Boolean> existByUsername(@RequestParam("username") String username){
-        log.info("입력받은 정보 : {}" );
-        return ResponseEntity.ok(service.existsByUsername(username));
-    }
 
     @GetMapping("/detail")
 
@@ -90,15 +85,13 @@ public class UserController {
         //log.info("입력받은 정보 : {}", name );
         return ResponseEntity.ok(service.findUsersByName(param.getName()));
     }
+    @GetMapping("/logout")
+    public ResponseEntity<Boolean> logout(@RequestHeader("Authorization") String accessToken) {
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<Messenger> login(@RequestBody UserDto param) {
-        log.info("로그인 파라미터 : {}", param );
-       Messenger messenger = service.login(param);
-       log.info("로그인 결과 메신저 확인 : {} ", messenger.toString());
-        return ResponseEntity.ok(messenger);
-
-
+        log.info("logout request : {}", accessToken);
+        Long id = 1L;
+        Boolean flag = service.logout(id);
+        return ResponseEntity.ok(flag);
 
     }
 

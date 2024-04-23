@@ -22,7 +22,7 @@ export  const linkButtonTitles = [
     {id:3, title:'카운터', path:`${PG.DEMO}/counter`},
     {id:4, title:'게시판목록', path:`${PG.BOARD}/list`},
     {id:5, title:'게시글목록', path:`${PG.ARTICLE}/list`}, 
-    {id:6, title:'사용자목록', path:`${PG.BOARD}/list`}
+    {id:6, title:'사용자목록', path:`${PG.USER}/list`}
   ];
 
   export  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];

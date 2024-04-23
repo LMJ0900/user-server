@@ -1,7 +1,10 @@
 package com.turing.api.common.component.security;
 
 
+import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
+import com.turing.api.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +20,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Slf4j
+@Log4j2
 @Component
 public class JwtProvider {
     @Value("${jwt.iss}")
@@ -27,7 +33,7 @@ public class JwtProvider {
     private final SecretKey secretKey;
     Instant expiredDate = Instant.now().plus(1, ChronoUnit.DAYS);
 
-    public JwtProvider(@Value("${jwt.secret}") String secretKey) {
+    public JwtProvider(@Value("${jwt.secret}") String secretKey, UserRepository repository) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
     public String createToken(UserDto dto) {
@@ -46,21 +52,22 @@ public class JwtProvider {
     }
     public String extractTokenFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(bearerToken != null && bearerToken.startsWith("Bearer")){
-            return bearerToken.substring(7);
-        }
-        return null;
+        return bearerToken != null && bearerToken.startsWith("Bearer ") ? bearerToken.substring(7) : "undefined";
     }
-    public String getPayload(String accessToken) {
+    public void printPayload(String accessToken) {
         String[] chunks = accessToken.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
+
         String header = new String(decoder.decode(chunks[0]));
         String payload = new String(decoder.decode(chunks[1]));
 
-        log.info("Access TOKEN Header : " + header);
-        log.info("Access TOKEN Payload : " + payload);
+        log.info("Jwt 프로바이더 Access Token Header : " + header);
+        log.info("Jwt 프로바이더 Access Token payload : " + payload);
 
 //        return new StringBuilder().append(header).append(payload).toString();
-        return payload;
+    }
+    public Claims getPayload(String token){
+        return Jwts.parser().verifyWith(secretKey).build()
+                .parseSignedClaims(token).getPayload();
     }
 }

@@ -107,7 +107,7 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
         String accessToken = jwtProvider.createToken(entityToDto(user));
         boolean flag = user.getPassword().equals(param.getPassword());
 
-        jwtProvider.getPayload(accessToken);
+        jwtProvider.printPayload(accessToken);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
@@ -115,7 +115,10 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
                 .build();
     }
 
-
+    @Override
+    public Boolean logout(Long id) {
+        return null;
+    }
 
 
 }

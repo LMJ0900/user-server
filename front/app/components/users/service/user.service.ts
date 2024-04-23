@@ -28,6 +28,6 @@ export const existsByUsername : any = createAsyncThunk(
 async (username : string) => await existsByUsernameAPI(username))
 
 export const logout: any = createAsyncThunk(
-    'user/logout',
-    async (username : string) => await logoutAPI(username)
+    'users/logout',
+    async (username : string) => await logoutAPI()
 )

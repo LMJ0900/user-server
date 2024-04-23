@@ -1,10 +1,10 @@
-import { instance } from "../../common/configs/axios-config"
+import  instance  from "../../common/configs/axios-config"
 import { IBoard } from "../model/board"
 
 
 export const findAllBoardsAPI = async (page: number) =>{
     try{
-        const response = await instance.get('/boards/list',{
+        const response = await instance().get('/boards/list',{
             params: {page, limit: 10}
         })
         return response.data
@@ -16,7 +16,7 @@ export const findAllBoardsAPI = async (page: number) =>{
 }
 export const findBoardByIdAPI = async (id: number) =>{
     try{
-        const response = await instance.get('/boards/detail',{
+        const response = await instance().get('/boards/detail',{
             params: {id}
         })
         return response.data
@@ -28,7 +28,7 @@ export const findBoardByIdAPI = async (id: number) =>{
 }
 export const deleteByIdAPI = async (id: number) =>{
     try{
-        const response = await instance.delete('/boards/detail',{
+        const response = await instance().delete('/boards/delete',{
             params: {id}
         })
 

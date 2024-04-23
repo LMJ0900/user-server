@@ -1,10 +1,10 @@
-import { instance } from "../../common/configs/axios-config"
+import  instance  from "../../common/configs/axios-config"
 import { IArticle } from "../model/article"
 
 
 export const findAllArticlesAPI = async (page: number) =>{
     try{
-        const response = await instance.get('/articles/list',{
+        const response = await instance().get('/articles/list',{
             params: {page}
         })
         return response.data
@@ -15,7 +15,7 @@ export const findAllArticlesAPI = async (page: number) =>{
 }
 export const findArticleByIdAPI = async (id: number) =>{
     try{
-        const response = await instance.get('/articles/detail',{
+        const response = await instance().get('/articles/detail',{
             params: {id}
         })
 
@@ -28,7 +28,7 @@ export const findArticleByIdAPI = async (id: number) =>{
 }
 export const deleteByIdAPI = async (id: number) =>{
     try{
-        const response = await instance.delete('/articles/detail',{
+        const response = await instance().delete('/articles/detail',{
             params: {id}
         })
 
@@ -40,7 +40,7 @@ export const deleteByIdAPI = async (id: number) =>{
 }
 export const findArticleByBoardIdAPI = async (id: number) =>{
     try{
-        const response = await instance.get('/articles/find',{
+        const response = await instance().get('/articles/find',{
             params: {id}
         })
         return response.data
@@ -50,7 +50,7 @@ export const findArticleByBoardIdAPI = async (id: number) =>{
 }
 export const saveArticleAPI = async (article:IArticle) =>{
     try{
-        const response = await instance.post('/articles/save',
+        const response = await instance().post('/articles/save',
             article
         )
         return response.data
