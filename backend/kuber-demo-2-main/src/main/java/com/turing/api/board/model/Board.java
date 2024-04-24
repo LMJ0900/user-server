@@ -10,6 +10,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 @ToString(exclude = {"id"})
 @Entity(name = "boards")
@@ -19,18 +21,12 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private String content;
     private String description;
 
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Article> articles;
-
-    @Builder(builderMethodName = "builder")
-    public Board(long id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-    }
 
 
 }

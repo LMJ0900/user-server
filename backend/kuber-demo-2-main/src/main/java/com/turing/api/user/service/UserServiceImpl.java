@@ -28,7 +28,7 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
 
     @Override
     public Messenger save(UserDto dto) {
-        User ent = repository.save(dtoToEntity(dto));
+        var ent = repository.save(dtoToEntity(dto));
         System.out.println((ent instanceof User) ? "SUCCESS" : "FAILURE");
 
         return Messenger.builder()
@@ -108,16 +108,25 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
         boolean flag = user.getPassword().equals(param.getPassword());
 
         jwtProvider.printPayload(accessToken);
+        repository.modifyTokenById(user.getId(), accessToken);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
                 .accessToken(flag ? accessToken : "None")
                 .build();
     }
-
+    @Transactional
     @Override
-    public Boolean logout(Long id) {
-        return null;
+    public Boolean logout(String token){
+        String accessToken = token != null && token.startsWith("Bearer ") ? token.substring(7) : "undefined";
+        Long id = jwtProvider.getPayload(accessToken).get("user_id", Long.class);
+        String updateToken = null;
+        Boolean a = repository.existsById(id);
+        repository.modifyTokenById(id,updateToken);
+
+        log.info("토큰 삭제 결과 : {]", a);
+
+        return a;
     }
 
 

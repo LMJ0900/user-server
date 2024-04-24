@@ -64,5 +64,5 @@ public interface UserService extends CommandService<UserDto>, QueryService<UserD
          return UserDto.builder().build();
      }
 
-    Boolean logout(Long id);
+    Boolean logout(String accessToken);
 }

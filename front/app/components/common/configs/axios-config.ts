@@ -22,10 +22,9 @@ export default function instance() {
 export const setInterceptor = (inputInstance:AxiosInstance)=>{
     inputInstance.interceptors.request.use(
     (config) => {
-        const accessToken = parseCookies().accessToken;
         console.log('AXIOS 인터셉터에서 쿠키에서 토큰 추출함')
         config.headers['content-Type'] = "application/json"
-        config.headers['Authorization'] = `Bearer ${accessToken}` 
+        config.headers['Authorization'] = `Bearer ${parseCookies().accessToken}` 
         return config
     },(error) => {
         console.log('axios 인터셉터에서 발생한 에러 : ' + error)

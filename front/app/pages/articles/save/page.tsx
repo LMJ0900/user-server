@@ -22,7 +22,13 @@ import { PG } from "@/app/components/common/enums/PG";
 
 export default function WriteArticlePage() {
   const router = useRouter()
+  // const[content, setContent] = useState("")
+  // const selectHandler = (e:any) => {
+  //   setContent(e.target.value)
+  // }
+  
   const [article, setArticle] = useState({} as IArticle)
+
   const handelCancel = () => {
    router.push(`${PG.BOARD}/list`)
   }
@@ -30,11 +36,23 @@ export default function WriteArticlePage() {
   dispatch(saveArticle(article))
   router.push(`${PG.BOARD}/list`)
   }
+  // const options = [
+  //   {id:1, title:"REVIEW", content:"리뷰게시판"},
+  //   {id:2, title:"QNA", content:"Q&A게시판"},
+  //   {id:3, title:"free", content:"자유게시판"},
+  // ]
+  const titleWriter= () =>{
+
+  }
+  const contentWriter = () => {
+
+  }
   const handleInsert = (e:any) => {
     const {
-      target: { value, name }
+      target: { options }
     } = e;
-    setArticle(dto => ({ ...dto, [name]: value }));
+    console.log( )
+    setArticle(dto => ({ ...dto, "board":options[options.selectedIndex].id }));
     //공부하기
     console.log(JSON.stringify(article))
   }
@@ -43,6 +61,11 @@ export default function WriteArticlePage() {
   const allBoards:IBoard[] = useSelector(getAllBoards);
   useEffect(()=>{
       dispatch(findAllBoards(1))
+      .then((res:any) => {
+        console.log(res.payload[0].content)
+        setArticle({...article, "content": res.payload[0]?.content})
+        console.log(article)
+      })
   },[])
   
 
@@ -51,21 +74,34 @@ export default function WriteArticlePage() {
 
     return(<>
 
+{/* <form className="max-w-sm mx-auto">
+  <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board</label>
+  <select 
+  onChange={selectHandler}>
+  {options.map((item, index)=>(
+    <option key={item.id} title={item.title}>{item.content} </option>
+  ))
+}
+ 
+  </select>
+</form> */}
+
 <form className="max-w-sm mx-auto">
   <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board</label>
   <select onChange={handleInsert} name = "board" > 
           {allBoards.map((item) => (
-            <option value={item.id} key={item.id}>
-            {item.title}
+            <option key={item.id} id={`${item.id}`} title={item.title}>
+            {item.content}
             </option>
           ))}
 
   </select>
 </form>
+
 <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
       {MyTypography('Article 작성', "1.5rem")}
-      <input className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" placeholder="Title" type="text" name="title" onChange={handleInsert} />
-      <textarea className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" placeholder="Describe everything about this post here" name="content" onChange={handleInsert}></textarea>
+      <input className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" placeholder="Title" type="text" name="title" onChange={titleWriter} />
+      <textarea className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" placeholder="Describe everything about this post here" name="content" onChange={contentWriter}></textarea>
       {/* <!-- icons --> */}
       <div className="icons flex text-gray-500 m-2">
         <svg className="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
