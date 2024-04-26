@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axios from "axios";
-import { findAllArticlesAPI, findArticleByBoardIdAPI, findArticleByIdAPI, saveArticleAPI } from "./article.api";
+import { deleteArticleAPI, findAllArticlesAPI, findArticleByBoardIdAPI, findArticleByIdAPI, modifyArticleAPI, saveArticleAPI } from "./article.api";
 import { IArticle } from "../model/article";
 
 export const findAllArticles: any = createAsyncThunk(
@@ -21,6 +21,21 @@ export const findAllArticles: any = createAsyncThunk(
         })
     export const saveArticle: any = createAsyncThunk(
         'articles/saveArticle',
-        async (article:IArticle)=>{const data:any = await  saveArticleAPI(article);
+        async (article:IArticle)=>{
+            const data:any = await  saveArticleAPI(article);
+            console.log("서비스 확인" + data)
             return data
         })
+        export const modifyArticle: any = createAsyncThunk(
+            'articles/modify',
+            async (article:IArticle)=>{
+                const data:any = await  modifyArticleAPI(article);
+                console.log("수정 서비스 확인" + data)
+                return data
+            })
+            export const deleteArticle: any = createAsyncThunk(
+                'articles/delete',
+                async (id: number)=>{
+                    console.log("삭제 서비스 확인" + id)
+                    await  deleteArticleAPI(id)
+                })

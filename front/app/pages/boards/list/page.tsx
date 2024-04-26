@@ -14,7 +14,7 @@ const dispatch = useDispatch()
 const allBoards:IBoard[] = useSelector(getAllBoards);
 useEffect(()=>{
     dispatch(findAllBoards(1))
-},[allBoards])
+},[])
 
 
 

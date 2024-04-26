@@ -5,7 +5,7 @@ import { IBoard } from "../model/board"
 export const findAllBoardsAPI = async (page: number) =>{
     try{
         const response = await instance().get('/boards/list',{
-            params: {page, limit: 10}
+            params: {page, size:10,limit: 10}
         })
         return response.data
     }catch(error){

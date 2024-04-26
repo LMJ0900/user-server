@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from "@reduxjs/toolkit";
-import { findAllArticles, findArticleByBoardId, findArticleById, saveArticle } from './article.service';
+import { deleteArticle, findAllArticles, findArticleByBoardId, findArticleById, modifyArticle, saveArticle } from './article.service';
 import { IArticle } from '../model/article';
 
 
@@ -47,7 +47,9 @@ export const articleSlice = createSlice({
         .addCase(findAllArticles.fulfilled, (state: any, {payload}: any) => {state.array = payload})
         .addCase(findArticleById.fulfilled, (state: any, {payload}: any) => {state.json = payload})
         .addCase(findArticleByBoardId.fulfilled, (state: any, {payload}: any) => {state.array = payload})
-        .addCase(saveArticle.fulfilled, (state: any, {payload}: any) => {state.array = payload})
+        .addCase(saveArticle.fulfilled, (state: any, {payload}: any) => {state.message = payload})
+        .addCase(modifyArticle.fulfilled, (state: any, {payload}: any) => {state.message = payload})
+        .addCase(deleteArticle.fulfilled, (state: any, {payload}: any) => {state.message = payload})
     }
 })
 export const getAllArticles = (state: any) => {
@@ -60,7 +62,16 @@ export const getfindArticleByBoardId = (state: any) => {
     return state.article.array;
 };
 export const getSaveArticle = (state: any) => {
-    return state.article.array;
+    console.log("슬라이스 확인" +state.article.message)
+    return state.article.message;
+};
+export const getModifyArticle = (state: any) => {
+    console.log("슬라이스 확인" +state.article.message)
+    return state.article.message;
+};
+export const getDeleteArticle = (state: any) => {
+    console.log("슬라이스 확인" +state.article.message)
+    return state.article.message;
 };
 
 export const {} = articleSlice.actions

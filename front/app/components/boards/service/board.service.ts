@@ -8,7 +8,7 @@ import { IBoard } from "../model/board";
 export const findAllBoards: any = createAsyncThunk(
     'boards/findAllboards',
     async (page: number)=>{
-        const data:any = await  findAllBoardsAPI(page);
+        const data:any = await  findAllBoardsAPI(1);
         return data
     }
 )

@@ -91,6 +91,7 @@ if(ID_CHECK.test(e.target.value)){
         console.log('토큰을 디코드한 내용 : ')
         console.log(jwtDecode<any>(parseCookies().accessToken))
         router.push('/pages/boards/list')
+        router.refresh()
       })
       .catch((err: any)=>{
         console.log('로그인 실패')

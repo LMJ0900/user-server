@@ -13,7 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
-@ToString(exclude = {"id"})
 @Entity(name = "boards")
 public class Board extends BaseEntity {
 

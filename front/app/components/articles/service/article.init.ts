@@ -7,9 +7,8 @@ export const initialState:IArticle = {
     content : '',
     regDate : '',
     modDate : '',
-    writer : '' ,
-    board : 0
-   
+    writerId : 0,
+    boardId : 0 
 
 
 }

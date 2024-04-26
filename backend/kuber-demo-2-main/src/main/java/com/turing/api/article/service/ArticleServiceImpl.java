@@ -4,7 +4,12 @@ package com.turing.api.article.service;
 import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.repository.ArticleRepository;
+import com.turing.api.board.model.Board;
+import com.turing.api.board.repository.BoardRepository;
 import com.turing.api.common.component.Messenger;
+import com.turing.api.user.model.User;
+import com.turing.api.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,25 +25,38 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository repository;
-
-
+    private final BoardRepository boardRepo;
+    private final UserRepository userRepo;
     @Override
-    public Messenger save(ArticleDto dto) {
-        Article ent = repository.save(dtoToEntity(dto));
-        System.out.println((ent instanceof Article) ? "SUCCESS" : "FAILURE");
+    @Transactional
+    public Messenger save(ArticleDto articleDto) {
+        log.info("1. 서비스 테스트" + articleDto);
+        Board board = boardRepo.findById(articleDto.getBoardId()).orElseThrow();
+        log.info("2. 보드 찾은 뒤 " + articleDto.getBoardId());
+        User user = userRepo.findById(articleDto.getWriterId()).orElseThrow();
+        log.info("3. 유저 찾은 뒤 " + articleDto.getWriterId());
+
+        Article ent = repository.save(dtoToEntity(articleDto,board,user));
+        System.out.println("4. 성공 실패 확인 : "+((ent instanceof Article) ? "SUCCESS" : "FAILURE"));
+        log.info("임플 테스트" + ent);
         return Messenger.builder()
                 .message((ent instanceof Article) ? "SUCCESS" : "FAILURE")
+                .id(ent.getBoard().getId())
                 .build();
     }
 
     @Override
+    @Transactional
     public Messenger deleteById(Long id) {
         repository.deleteById(id);
-        return null;
+        log.info("삭제 임플 : " + id);
+        return Messenger.builder()
+                .message("SUCCESS").build();
     }
 
     @Override
-    public Messenger modify(ArticleDto articleDto) {
+    @Transactional
+    public Messenger modify(ArticleDto dto) {
         return null;
     }
 
@@ -68,4 +86,5 @@ public class ArticleServiceImpl implements ArticleService {
         return repository.findArticleByBoardId(boardId)   .stream().map(i -> entityToDto(i))
                 .toList();
     }
+
 }

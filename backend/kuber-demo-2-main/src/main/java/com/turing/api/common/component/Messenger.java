@@ -15,6 +15,7 @@ public class Messenger {
     private String accessToken;
     private String refreshToken;
     private String code;
+    private Long id;
 
 
 }

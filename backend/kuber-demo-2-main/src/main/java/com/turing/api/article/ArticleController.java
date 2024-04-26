@@ -4,7 +4,9 @@ package com.turing.api.article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.service.ArticleServiceImpl;
 import com.turing.api.common.component.Messenger;
+import com.turing.api.user.model.UserDto;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.tool.schema.spi.SqlScriptException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +26,13 @@ public class ArticleController {
 
 
    @PostMapping("/save")
-    public ResponseEntity<Messenger> save(@RequestBody ArticleDto dto){
-       log.info("글쓰기 입력값 : " + dto);
+    public ResponseEntity<Messenger> save(@RequestBody ArticleDto dto) {
+       log.info("글쓰기 컨트롤러" + dto);
        return ResponseEntity.ok(service.save(dto));
    }
     @DeleteMapping("/delete")
-    public ResponseEntity<Messenger> deleteById(@RequestParam Long id){
+    public ResponseEntity<Messenger> deleteById(@RequestParam("id") Long id){
+       log.info("삭제 컨트롤러" + id);
         return ResponseEntity.ok(service.deleteById(id));
     }
     @GetMapping("/list")
@@ -54,5 +57,10 @@ public class ArticleController {
     @GetMapping("/existId")
     public ResponseEntity<Boolean> existsById(@RequestBody long id){
         return ResponseEntity.ok(service.existsById(id));
+    }
+    @PutMapping("/modify")
+    public ResponseEntity<Messenger> modify(@RequestBody ArticleDto dto){
+       log.info("modify 정보 : {} ", dto);
+       return ResponseEntity.ok(service.modify(dto));
     }
 }

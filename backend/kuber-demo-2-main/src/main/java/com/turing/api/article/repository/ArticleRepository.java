@@ -27,6 +27,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long>{
 //            ", a.regDate, a.modDate) ";
 //    @Query("SELECT " + articleDtoMapping + " FROM articles a WHERE a.board.id = :boardId")
 //    public List<ArticleDto> getArticleDTOsByBoardId(@Param("boardId") Long boardId);
-
     List<Article> findArticleByBoardId(Long boardId);
 }

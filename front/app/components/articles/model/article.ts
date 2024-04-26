@@ -4,7 +4,7 @@ export interface IArticle{
     content? : string
     regDate? : string
     modDate? : string
-    writer? : string
-    board? : number
+    writerId? : number
+    boardId? : number
    
 }

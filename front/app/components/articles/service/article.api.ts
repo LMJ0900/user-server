@@ -49,12 +49,40 @@ export const findArticleByBoardIdAPI = async (id: number) =>{
     }
 }
 export const saveArticleAPI = async (article:IArticle) =>{
+    console.log("게시글 api 확인 : ", JSON.stringify(article))
     try{
         const response = await instance().post('/articles/save',
-            article
-        )
-        return response.data
-    }catch(error){
+        article
+    )
+    console.log("api 확인합니다 "+JSON.stringify(article))
+    return response.data
+}catch(error){
         console.log(error)
+    }
+}
+export const modifyArticleAPI = async (article:IArticle) =>{
+    console.log("게시글 api 확인 : ", JSON.stringify(article))
+    try{
+        const response = await instance().put('/articles/modify',
+        article
+    )
+    console.log("api 확인합니다 "+JSON.stringify(article))
+    return response.data
+}catch(error){
+        console.log(error)
+    }
+}
+export const deleteArticleAPI = async (id: number) =>{
+    console.log("delete api 확인합니다 "+JSON.stringify(id))
+    try{
+        const response = await instance().delete(`/articles/delete`,
+        {params:{id}})
+    console.log("delete api 확인합니다 "+JSON.stringify(id))
+    return response.data
+}catch(error){
+        console.log(error)
+    }
+    {
+        console.log("예외사항")
     }
 }

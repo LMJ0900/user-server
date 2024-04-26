@@ -27,6 +27,7 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
 
 
     @Override
+    @Transactional
     public Messenger save(UserDto dto) {
         var ent = repository.save(dtoToEntity(dto));
         System.out.println((ent instanceof User) ? "SUCCESS" : "FAILURE");
@@ -37,6 +38,7 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
     }
 
     @Override
+    @Transactional
     public Messenger deleteById(Long id) {
 
         repository.deleteById(id);
@@ -74,6 +76,7 @@ public class UserServiceImpl/* extends AbstractService<User>*/ implements UserSe
     }
 
     @Override
+    @Transactional
     public Messenger modify(UserDto user) {
         User ent = repository.save(dtoToEntity(user));
 

@@ -24,7 +24,7 @@ import { jwtDecode } from "jwt-decode";
 import { parseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { parseCookies } from "nookies";
 // import React from "react";
-export default function WriteArticlePage(props: any) {
+export default function UpdateArticlePage({}) {
   const router = useRouter()
  
 
@@ -54,8 +54,22 @@ export default function WriteArticlePage(props: any) {
     // console.log('토큰을 디코드한 ID : ')
     // console.log(jwtDecode<any>(parseCookies().accessToken).userId)
   } , [])
+  const titleWriter= () =>{
 
+  }
+  const contentWriter = () => {
 
+  }
+  const handleInsert = (e:any) => {
+    const {
+      target: { options }
+    } = e;
+    console.log( )
+    setArticle(dto => ({ ...dto, "board":options[options.selectedIndex].id }));
+    //공부하기
+    console.log(JSON.stringify(article))
+  }
+  
   const dispatch = useDispatch()
   const allBoards:IBoard[] = useSelector(getAllBoards);
   useEffect(()=>{
@@ -77,7 +91,7 @@ export default function WriteArticlePage(props: any) {
       const data = res.payload
       alert(`게시글 작성 완료 ${res.payload}`)
       const boardId = data.boardId
-      router.push(`${PG.ARTICLE}/find/${res.payload.id}`)      
+      router.push(`/ariticle/list.${boardId}`)      
 
     })
     .catch((err:any)=>{});
@@ -101,12 +115,11 @@ export default function WriteArticlePage(props: any) {
 <form onSubmit={handleSubmit(onSubmit)}className="max-w-sm mx-auto">
   <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Board</label>
   <select 
-  {...register('boardId', {required: true})}
-  defaultValue={props.params.id}
+  {...register('id', {required: true})}
   > 
-          {allBoards.map((v:IBoard) => (
-            <option key={v.id} value={`${v.id}`}  >
-            {v.content}
+          {allBoards.map((item) => (
+            <option key={item.id} id={`${item.id}`} title={item.title} >
+            {item.content}
             </option>
           ))}
 
@@ -116,12 +129,12 @@ export default function WriteArticlePage(props: any) {
 <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
       {MyTypography('Article 작성', "1.5rem")}
       <input type="hidden" value={jwtDecode<any>(parseCookies().accessToken).userId} readOnly
-      {...register('writerId', {required: true})}/>
+      {...register('Writer', {required: true})}/>
       <input
        {...register('title', {required: true, maxLength : 20})}
       className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none" placeholder="Title" type="text"/>
       <textarea 
-      {...register('content', {required: true, maxLength : 300})}
+      {...register('content', {required: true})}
       className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none" placeholder="Describe everything about this post here"></textarea>
       {/* <!-- icons --> */}
       <div className="icons flex text-gray-500 m-2">

@@ -32,6 +32,8 @@ return(<>
         pageSizeOptions={[5,10,20]} // 4-1
         checkboxSelection
       />}
+      <td><button>수정</button></td>
+      <td><button>삭제</button></td>
     </div>
 </>)
 }

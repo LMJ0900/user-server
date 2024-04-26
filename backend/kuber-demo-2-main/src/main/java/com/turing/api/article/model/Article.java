@@ -5,6 +5,7 @@ import com.turing.api.board.model.Board;
 import com.turing.api.common.model.BaseEntity;
 import com.turing.api.user.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
@@ -13,12 +14,11 @@ import lombok.extern.log4j.Log4j2;
 @Getter
 @Builder
 @AllArgsConstructor
-@ToString(exclude = {"id"})
 @Entity(name = "articles")
 public class Article extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
     private Long id;
     private String title;

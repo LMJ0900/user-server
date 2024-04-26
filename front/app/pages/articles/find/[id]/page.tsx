@@ -27,7 +27,7 @@ useEffect(()=>{
 },[])
 return(<>
 <h2>게시글 목록</h2>
-<MoveButton text={"글쓰기"} path={`${PG.ARTICLE}/save`}></MoveButton>
+<MoveButton text={"글쓰기"} path={`${PG.ARTICLE}/save/`}></MoveButton>
         <div style={{ height: "100%", width: "100%" }}>
   {ArticlesList && <DataGrid // 🔥 4
         rows={ArticlesList}
